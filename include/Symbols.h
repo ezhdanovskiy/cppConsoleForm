@@ -5,14 +5,15 @@
 #include "Logger.h"
 #include <unordered_map>
 
+enum Position {
+    BORDER_TOP_LEFT,    BORDER_TOP_MIDDLE,      BORDER_TOP_RIGHT,
+    BORDER_MIDDLE_LEFT,                         BORDER_MIDDLE_RIGHT,
+    BORDER_BOTTOM_LEFT, BORDER_BOTTOM_MIDDLE,   BORDER_BOTTOM_RIGHT,
+    INSIDE, OUTSIDE,
+};
+
 class Symbols {
 public:
-    enum Position {
-        BORDER_TOP_LEFT,    BORDER_TOP_MIDDLE,      BORDER_TOP_RIGHT,
-        BORDER_MIDDLE_LEFT,                         BORDER_MIDDLE_RIGHT,
-        BORDER_BOTTOM_LEFT, BORDER_BOTTOM_MIDDLE,   BORDER_BOTTOM_RIGHT,
-        INSIDE, OUTSIDE,
-    };
 
     Symbols();
 

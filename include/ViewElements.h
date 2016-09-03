@@ -35,7 +35,7 @@ public:
             return element->getChar(x, y);
         }
 
-        Symbols::Position getPosition(int x, int y) {
+        Position getPosition(int x, int y) {
             return element->getPosition(x, y);
         }
 
@@ -56,7 +56,7 @@ public:
         return width;
     }
 
-    Symbols::Position getPosition(int x, int y);
+    Position getPosition(int x, int y);
 
     virtual char getChar(int x, int y);
 
@@ -65,9 +65,6 @@ public:
     }
 
 protected:
-    bool checkPosition(int x, int y) const {
-        return (x >= 0 && x <= width && y >= 0 && y <= height);
-    }
     size_t height;
     size_t width;
     std::string label;
