@@ -1,19 +1,30 @@
+#include "Logger.h"
+#include "KeyController.h"
 #include "View.h"
-
-#include <iostream>
-#include <unistd.h>
-
-//#define CLEAR "\033[H\033[J"
 
 int main() {
     View view;
     std::cout << view.getView();
-    sleep(1);
-    std::cout << view.getView();
-    sleep(1);
-    std::cout << view.getView();
-    sleep(1);
-    std::cout << view.getView();
-    sleep(1);
+    bool exit = false;
+    while (!exit) {
+        switch (KeyController::getControl()) {
+            case KeyController::Control::NOTHING :
+                LOG("NOTHING");
+                std::cout << view.getView();
+                break;
+            case KeyController::Control::NEXT :
+                LOG("NEXT");
+                std::cout << view.getNextView();
+                break;
+            case KeyController::Control::PREVIOUS :
+                LOG("PREVIOUS");
+                std::cout << view.getPreviousView();
+                break;
+            case KeyController::Control::EXIT :
+                LOG("EXIT");
+                exit = true;
+                break;
+        }
+    }
     return 0;
 }
