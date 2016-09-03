@@ -12,26 +12,42 @@ enum Position {
     INSIDE, OUTSIDE,
 };
 
+enum Color {
+    Black, Red, Green, Yellow, Blue, Magenta, Cyan,	White
+};
+
+std::string getConsoleColor(Color textColor, Color backgroundColor);
+
 class Symbols {
 public:
 
     Symbols();
 
-    char getSymbol(Position position, int page = 0);
+    std::string getSymbol(Position position, int page = 0);
+    std::string getColor(int page = 0);
 
 protected:
     void setTop(std::string s, int page = 0);
     void setMiddle(std::string s, int page = 0);
     void setBottom(std::string s, int page = 0);
     void setOutside(char ch, int page = 0);
+    void setTextColor(Color color, int page = 0);
+    void setBackgroundColor(Color color, int page = 0);
     int makeIndex(Position position, int page);
 
     std::unordered_map<int, char> symbols;
+    Color textColors[2];
+    Color backgroundColors[2];
 };
 
 class Symbols2 : public Symbols {
 public:
     Symbols2();
+};
+
+class ButtonSymbols : public Symbols {
+public:
+    ButtonSymbols();
 };
 
 #endif //CPPCONSOLEFORM_SYMBOLS_H

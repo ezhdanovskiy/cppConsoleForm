@@ -41,8 +41,8 @@ public:
             element->setStatus(newStatus);
         }
 
-        char getChar(int x, int y) {
-            return element->getChar(x, y);
+        std::string getSymbol(int x, int y) {
+            return element->getSymbol(x, y);
         }
 
         Position getPosition(int x, int y) {
@@ -55,10 +55,8 @@ public:
         int y;
     };
 
-    ViewElement(size_t width, size_t height, std::string label, std::string className, Status status)
-            : height(height), width(width), label(label), className(className), status(status),
-              symbols(std::make_shared<Symbols>())
-    {}
+    ViewElement(size_t width, size_t height, std::string label, std::string className,
+                std::shared_ptr<Symbols> symbols, Status status);
 
     size_t getHeight() const {
         return height;
@@ -78,7 +76,8 @@ public:
 
     Position getPosition(int x, int y);
 
-    virtual char getChar(int x, int y);
+    virtual std::string getSymbol(int x, int y);
+    virtual std::string getColor();
 
     void addElement(ViewElement *ptr, int x, int y) {
         elements.emplace_back(ptr, x, y);
@@ -101,27 +100,21 @@ protected:
 
 class MainForm : public ViewElement {
 public:
-    MainForm(size_t width, size_t height, std::string label, Status status = Status::NORMAL)
-            : ViewElement(width, height, label, "MainForm", status) {}
+    MainForm(size_t width, size_t height, std::string label, Status status = Status::NORMAL);
 };
 
 class ListView : public ViewElement {
 public:
-    ListView(size_t width, size_t height, std::string label, Status status = Status::NORMAL)
-            : ViewElement(width, height, label, "ListView", status) {}
+    ListView(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols,
+             Status status = Status::NORMAL);
 };
 
-class Batton : public ViewElement {
+class Button : public ViewElement {
 public:
-    Batton(size_t width, size_t height, std::string label, Status status = Status::NORMAL)
-            : ViewElement(width, height, label, "Batton", status) {}
+    Button(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols,
+           Status status = Status::NORMAL);
 
-    char getChar(int x, int y) {
-        if (y == 1 && x >= 1 && x <= label.size()) {
-            return label[x - 1];
-        }
-        return ViewElement::getChar(x, y);
-    }
+    std::string getSymbol(int x, int y) override;
 };
 
 
