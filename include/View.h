@@ -13,6 +13,7 @@ public:
     std::string getView();
     void moveActiveToNext();
     void moveActiveToPrevious();
+    void changeSkin();
 
 private:
     MainForm mainForm;

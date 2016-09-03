@@ -13,7 +13,7 @@ KeyController::Control KeyController::getControl() {
     ch[0] = getchar();
     Control out;
     switch (ch[0]) {
-        case 27:
+        case 27: {
             ch[1] = getchar();
             switch (ch[1]) {
                 case 91:
@@ -41,11 +41,15 @@ KeyController::Control KeyController::getControl() {
                     break;
             }
             break;
+        }
         case 9: // tab
             out = Control::NEXT;
             break;
         case 113: // q
             out = Control::EXIT;
+            break;
+        case 105: // i
+            out = Control::CHANGE_SYMBOLS;
             break;
         default:
             out = Control::NOTHING;

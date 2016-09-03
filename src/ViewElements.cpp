@@ -1,7 +1,7 @@
 #include "ViewElements.h"
 
 Position ViewElement::getPosition(int x, int y) {
-    LOG(__func__ << "(" << x << ", " << y << ") " << label);
+//    LOG(__func__ << "(" << x << ", " << y << ") " << label);
     if (!(x >= 0 && x < width && y >= 0 && y < height)) {
         return Position::OUTSIDE;
     }
@@ -33,7 +33,7 @@ Position ViewElement::getPosition(int x, int y) {
 }
 
 char ViewElement::getChar(int x, int y) {
-    LOG(__func__ << "(" << x << ", " << y << ") " << label);
+//    LOG(__func__ << "(" << x << ", " << y << ") " << label);
     Position position = getPosition(x, y);
     if (position == Position::INSIDE) {
         for (auto &el : elements) {
@@ -43,7 +43,7 @@ char ViewElement::getChar(int x, int y) {
             }
         }
     }
-    return symbols.getSymbol(position, status);
+    return symbols->getSymbol(position, status);
 }
 
 void ViewElement::moveActiveToNext() {
@@ -72,4 +72,8 @@ void ViewElement::moveActiveToPrevious() {
             break;
         }
     }
+}
+
+void ViewElement::changeSymbols(std::shared_ptr<Symbols> newSymbols) {
+    symbols = newSymbols;
 }

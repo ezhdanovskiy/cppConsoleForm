@@ -19,7 +19,7 @@ public:
 
     char getSymbol(Position position, int page = 0);
 
-private:
+protected:
     void setTop(std::string s, int page = 0);
     void setMiddle(std::string s, int page = 0);
     void setBottom(std::string s, int page = 0);
@@ -29,5 +29,9 @@ private:
     std::unordered_map<int, char> symbols;
 };
 
+class Symbols2 : public Symbols {
+public:
+    Symbols2();
+};
 
 #endif //CPPCONSOLEFORM_SYMBOLS_H

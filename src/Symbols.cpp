@@ -9,14 +9,26 @@ Symbols::Symbols() {
 //        setTop(   "╔─╗");
 //        setMiddle("│ │");
 //        setBottom("╚─╝");
-    setTop(   "/-\\");
+//    setTop(   "/-\\");
+//    setMiddle("| |");
+//    setBottom("\\-/");
+    setTop(   " - ");
     setMiddle("| |");
-    setBottom("\\-/");
+    setBottom(" - ");
     setOutside('z');
 
-    setTop(   "***", 1);
-    setMiddle("* *", 1);
-    setBottom("***", 1);
+//    setTop(   "***", 1);
+//    setMiddle("* *", 1);
+//    setBottom("***", 1);
+
+    setTop(   "*-*", 1);
+    setMiddle("| |", 1);
+    setBottom("*-*", 1);
+
+//    setTop(   "*=*", 1);
+//    setMiddle("# #", 1);
+//    setBottom("*=*", 1);
+
     setOutside('Z', 1);
 }
 
@@ -57,4 +69,11 @@ void Symbols::setBottom(std::string s, int page) {
 
 void Symbols::setOutside(char ch, int page) {
     symbols[makeIndex(OUTSIDE, page)] = ch;
+}
+
+Symbols2::Symbols2() : Symbols() {
+    setTop(   "===");
+    setTop(   "*=*", 1);
+    setMiddle("# #", 1);
+    setBottom("*=*", 1);
 }

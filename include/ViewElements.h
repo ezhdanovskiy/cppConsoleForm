@@ -56,7 +56,9 @@ public:
     };
 
     ViewElement(size_t width, size_t height, std::string label, std::string className, Status status)
-            : height(height), width(width), label(label), className(className), status(status) {}
+            : height(height), width(width), label(label), className(className), status(status),
+              symbols(std::make_shared<Symbols>())
+    {}
 
     size_t getHeight() const {
         return height;
@@ -85,12 +87,14 @@ public:
     void moveActiveToNext();
     void moveActiveToPrevious();
 
+    void changeSymbols(std::shared_ptr<Symbols> newSymbols);
+
 protected:
     size_t height;
     size_t width;
     std::string label;
     std::string className;
-    Symbols symbols;
+    std::shared_ptr<Symbols> symbols;
     std::vector<InnerElement> elements;
     Status status;
 };

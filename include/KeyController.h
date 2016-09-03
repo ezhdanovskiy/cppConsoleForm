@@ -5,7 +5,7 @@
 namespace KeyController {
 
 enum Control {
-    NOTHING, NEXT, PREVIOUS, EXIT
+    NOTHING, NEXT, PREVIOUS, EXIT, CHANGE_SYMBOLS
 };
 
 Control getControl();

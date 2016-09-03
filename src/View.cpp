@@ -15,7 +15,7 @@ std::string View::getView() {
     for (int y = 0; y < mainForm.getHeight(); ++y) {
         for (int x = 0; x < mainForm.getWidth(); ++x) {
             s += mainForm.getChar(x, y);
-            LOG("  getChar(" << x << ", " << y << ") return " << s[s.size()-1]);
+//            LOG("  getChar(" << x << ", " << y << ") return " << s[s.size()-1]);
         }
         s += '\n';
     }
@@ -28,5 +28,9 @@ void View::moveActiveToNext() {
 
 void View::moveActiveToPrevious() {
     mainForm.moveActiveToPrevious();
+}
+
+void View::changeSkin() {
+    mainForm.changeSymbols(std::make_shared<Symbols2>());
 }
 

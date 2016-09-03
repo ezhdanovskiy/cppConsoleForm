@@ -21,6 +21,11 @@ int main() {
                 view.moveActiveToPrevious();
                 std::cout << view.getView();
                 break;
+            case KeyController::Control::CHANGE_SYMBOLS :
+                LOG("CHANGE_SYMBOLS");
+                view.changeSkin();
+                std::cout << view.getView();
+                break;
             case KeyController::Control::EXIT :
                 LOG("EXIT");
                 exit = true;
