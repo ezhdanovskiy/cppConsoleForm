@@ -1,9 +1,8 @@
 #include "View.h"
-#include "Logger.h"
 
 #include <sstream>
 
-View::View() : currentView(0) {
+View::View() : currentView(0), mainForm(5, 10) {
     {
         std::stringstream s;
         s << "┌────────────────────────────────────────────────────┐" << std::endl;
@@ -91,11 +90,19 @@ View::View() : currentView(0) {
 }
 
 std::string View::getView() {
-    LOG(__func__ << "() currentView=" << currentView);
-    if (views.empty()) {
-        return "";
+    std::string s;
+    for (int y = 0; y <= mainForm.getHeight(); ++y) {
+        for (int x = 0; x <= mainForm.getWidth(); ++x) {
+            s += mainForm.getChar(x, y);
+        }
+        s += '\n';
     }
-    return views[currentView];
+    return s;
+//    LOG(__func__ << "() currentView=" << currentView);
+//    if (views.empty()) {
+//        return "";
+//    }
+//    return views[currentView];
 }
 
 std::string View::getNextView() {

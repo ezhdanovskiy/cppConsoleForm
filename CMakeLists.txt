@@ -9,5 +9,7 @@ set(SOURCE_FILES
     src/main.cpp
     src/View.cpp
     src/KeyController.cpp
+    src/ViewElements.cpp
+    src/Symbols.cpp
     )
 add_executable(cppConsoleForm ${SOURCE_FILES})
