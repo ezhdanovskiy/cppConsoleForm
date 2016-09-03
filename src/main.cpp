@@ -10,14 +10,15 @@ int main() {
         switch (KeyController::getControl()) {
             case KeyController::Control::NOTHING :
                 LOG("NOTHING");
-                std::cout << view.getView();
                 break;
             case KeyController::Control::NEXT :
                 LOG("NEXT");
+                view.moveActiveToNext();
                 std::cout << view.getView();
                 break;
             case KeyController::Control::PREVIOUS :
                 LOG("PREVIOUS");
+                view.moveActiveToPrevious();
                 std::cout << view.getView();
                 break;
             case KeyController::Control::EXIT :

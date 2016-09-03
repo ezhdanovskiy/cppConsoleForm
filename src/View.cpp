@@ -21,3 +21,12 @@ std::string View::getView() {
     }
     return s;
 }
+
+void View::moveActiveToNext() {
+    mainForm.moveActiveToNext();
+}
+
+void View::moveActiveToPrevious() {
+    mainForm.moveActiveToPrevious();
+}
+

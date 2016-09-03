@@ -21,6 +21,7 @@ KeyController::Control KeyController::getControl() {
                     switch (ch[2]) {
                         case 65: // up
                         case 68: // left
+                        case 90: // sift + tab
                             out = Control::PREVIOUS;
                             break;
                         case 66: // down

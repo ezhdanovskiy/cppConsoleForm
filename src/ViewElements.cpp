@@ -45,3 +45,31 @@ char ViewElement::getChar(int x, int y) {
     }
     return symbols.getSymbol(position, status);
 }
+
+void ViewElement::moveActiveToNext() {
+    for (int i = 0; i < elements.size(); ++i) {
+        if (elements[i].getStatus() == Status::ACTIVE) {
+            elements[i].setStatus(Status::NORMAL);
+            if (i < elements.size() - 1) {
+                elements[i + 1].setStatus(Status::ACTIVE);
+            } else {
+                elements[0].setStatus(Status::ACTIVE);
+            }
+            break;
+        }
+    }
+}
+
+void ViewElement::moveActiveToPrevious() {
+    for (int i = 0; i < elements.size(); ++i) {
+        if (elements[i].getStatus() == Status::ACTIVE) {
+            elements[i].setStatus(Status::NORMAL);
+            if (i > 0) {
+                elements[i - 1].setStatus(Status::ACTIVE);
+            } else {
+                elements[elements.size() - 1].setStatus(Status::ACTIVE);
+            }
+            break;
+        }
+    }
+}

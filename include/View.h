@@ -11,6 +11,8 @@ public:
     View();
 
     std::string getView();
+    void moveActiveToNext();
+    void moveActiveToPrevious();
 
 private:
     MainForm mainForm;

@@ -33,6 +33,14 @@ public:
             return y;
         }
 
+        Status getStatus() const {
+            return element->getStatus();
+        }
+
+        void setStatus(Status newStatus) {
+            element->setStatus(newStatus);
+        }
+
         char getChar(int x, int y) {
             return element->getChar(x, y);
         }
@@ -58,6 +66,14 @@ public:
         return width;
     }
 
+    Status getStatus() const {
+        return status;
+    }
+
+    void setStatus(Status newStatus) {
+        status = newStatus;
+    }
+
     Position getPosition(int x, int y);
 
     virtual char getChar(int x, int y);
@@ -65,6 +81,9 @@ public:
     void addElement(ViewElement *ptr, int x, int y) {
         elements.emplace_back(ptr, x, y);
     }
+
+    void moveActiveToNext();
+    void moveActiveToPrevious();
 
 protected:
     size_t height;
