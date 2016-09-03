@@ -1,32 +1,47 @@
 #include "ViewElements.h"
 
-char MainForm::getChar(int x, int y) {
-    if (!checkPosition(x, y)) {
-        return symbols.getSymbol(Symbols::Position::OUTSIDE);
+Symbols::Position Element::getPosition(int x, int y) {
+    LOG(__func__ << "(" << x << ", " << y << ") " << label);
+    if (!(x >= 0 && x < width && y >= 0 && y < height)) {
+        return Symbols::Position::OUTSIDE;
     }
     if (y == 0) {
         if (x == 0) {
-            return symbols.getSymbol(Symbols::Position::BORDER_TOP_LEFT);
+            return Symbols::Position::BORDER_TOP_LEFT;
         }
-        if (x == width) {
-            return symbols.getSymbol(Symbols::Position::BORDER_TOP_RIGHT);
+        if (x == width - 1) {
+            return Symbols::Position::BORDER_TOP_RIGHT;
         }
-        return symbols.getSymbol(Symbols::Position::BORDER_TOP_MIDDLE);
+        return Symbols::Position::BORDER_TOP_MIDDLE;
     }
-    if (y == height) {
+    if (y == height - 1) {
         if (x == 0) {
-            return symbols.getSymbol(Symbols::Position::BORDER_BOTTOM_LEFT);
+            return Symbols::Position::BORDER_BOTTOM_LEFT;
         }
-        if (x == width) {
-            return symbols.getSymbol(Symbols::Position::BORDER_BOTTOM_RIGHT);
+        if (x == width - 1) {
+            return Symbols::Position::BORDER_BOTTOM_RIGHT;
         }
-        return symbols.getSymbol(Symbols::Position::BORDER_BOTTOM_MIDDLE);
+        return Symbols::Position::BORDER_BOTTOM_MIDDLE;
     }
     if (x == 0) {
-        return symbols.getSymbol(Symbols::Position::BORDER_MIDDLE_LEFT);
+        return Symbols::Position::BORDER_MIDDLE_LEFT;
     }
-    if (x == width) {
-        return symbols.getSymbol(Symbols::Position::BORDER_MIDDLE_RIGHT);
+    if (x == width - 1) {
+        return Symbols::Position::BORDER_MIDDLE_RIGHT;
     }
-    return symbols.getSymbol(Symbols::Position::BORDER_MIDDLE_MIDDLE);
+    return Symbols::Position::INSIDE;
+}
+
+char Element::getChar(int x, int y) {
+    LOG(__func__ << "(" << x << ", " << y << ") " << label);
+    Symbols::Position position = getPosition(x, y);
+    if (position == Symbols::Position::INSIDE) {
+        for (auto &el : elements) {
+            Symbols::Position elPosition = el.getPosition(x - el.getX(), y - el.getY());
+            if (elPosition != Symbols::Position::OUTSIDE) {
+                return el.getChar(x - el.getX(), y - el.getY());
+            }
+        }
+    }
+    return symbols.getSymbol(position);
 }

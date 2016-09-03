@@ -12,13 +12,7 @@ public:
 
     std::string getView();
 
-    std::string getNextView();
-
-    std::string getPreviousView();
-
 private:
-    std::vector<std::string> views;
-    size_t currentView;
     MainForm mainForm;
 };
 

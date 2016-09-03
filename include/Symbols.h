@@ -9,9 +9,9 @@ class Symbols {
 public:
     enum Position {
         BORDER_TOP_LEFT,    BORDER_TOP_MIDDLE,      BORDER_TOP_RIGHT,
-        BORDER_MIDDLE_LEFT, BORDER_MIDDLE_MIDDLE,   BORDER_MIDDLE_RIGHT,
+        BORDER_MIDDLE_LEFT,                         BORDER_MIDDLE_RIGHT,
         BORDER_BOTTOM_LEFT, BORDER_BOTTOM_MIDDLE,   BORDER_BOTTOM_RIGHT,
-        OUTSIDE
+        INSIDE, OUTSIDE,
     };
 
     Symbols();

@@ -14,11 +14,11 @@ int main() {
                 break;
             case KeyController::Control::NEXT :
                 LOG("NEXT");
-                std::cout << view.getNextView();
+                std::cout << view.getView();
                 break;
             case KeyController::Control::PREVIOUS :
                 LOG("PREVIOUS");
-                std::cout << view.getPreviousView();
+                std::cout << view.getView();
                 break;
             case KeyController::Control::EXIT :
                 LOG("EXIT");
