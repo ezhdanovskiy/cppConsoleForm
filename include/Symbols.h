@@ -17,13 +17,14 @@ public:
 
     Symbols();
 
-    char getSymbol(Position position);
+    char getSymbol(Position position, int page = 0);
 
 private:
-    void setTop(std::string s);
-    void setMiddle(std::string s);
-    void setBottom(std::string s);
-    void setOutside(char ch);
+    void setTop(std::string s, int page = 0);
+    void setMiddle(std::string s, int page = 0);
+    void setBottom(std::string s, int page = 0);
+    void setOutside(char ch, int page = 0);
+    int makeIndex(Position position, int page);
 
     std::unordered_map<int, char> symbols;
 };

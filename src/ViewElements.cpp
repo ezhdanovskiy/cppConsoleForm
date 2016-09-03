@@ -1,6 +1,6 @@
 #include "ViewElements.h"
 
-Position Element::getPosition(int x, int y) {
+Position ViewElement::getPosition(int x, int y) {
     LOG(__func__ << "(" << x << ", " << y << ") " << label);
     if (!(x >= 0 && x < width && y >= 0 && y < height)) {
         return Position::OUTSIDE;
@@ -32,7 +32,7 @@ Position Element::getPosition(int x, int y) {
     return Position::INSIDE;
 }
 
-char Element::getChar(int x, int y) {
+char ViewElement::getChar(int x, int y) {
     LOG(__func__ << "(" << x << ", " << y << ") " << label);
     Position position = getPosition(x, y);
     if (position == Position::INSIDE) {
@@ -43,5 +43,5 @@ char Element::getChar(int x, int y) {
             }
         }
     }
-    return symbols.getSymbol(position);
+    return symbols.getSymbol(position, status);
 }

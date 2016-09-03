@@ -9,11 +9,13 @@
 #include <cstddef>
 #include <string>
 
-class Element {
+class ViewElement {
 public:
+    enum Status {NORMAL, ACTIVE};
+
     class InnerElement {
     public:
-        InnerElement(Element *ptr, int x, int y) : element(ptr), x(x), y(y) {}
+        InnerElement(ViewElement *ptr, int x, int y) : element(ptr), x(x), y(y) {}
 
         size_t getHeight() const {
             return element->getHeight();
@@ -40,13 +42,13 @@ public:
         }
 
     private:
-        std::unique_ptr<Element> element;
+        std::unique_ptr<ViewElement> element;
         int x;
         int y;
     };
 
-    Element(size_t width, size_t height, std::string label, std::string className)
-            : height(height), width(width), label(label), className(className) {}
+    ViewElement(size_t width, size_t height, std::string label, std::string className, Status status)
+            : height(height), width(width), label(label), className(className), status(status) {}
 
     size_t getHeight() const {
         return height;
@@ -60,7 +62,7 @@ public:
 
     virtual char getChar(int x, int y);
 
-    void addElement(Element *ptr, int x, int y) {
+    void addElement(ViewElement *ptr, int x, int y) {
         elements.emplace_back(ptr, x, y);
     }
 
@@ -71,27 +73,31 @@ protected:
     std::string className;
     Symbols symbols;
     std::vector<InnerElement> elements;
+    Status status;
 };
 
-class MainForm : public Element {
+class MainForm : public ViewElement {
 public:
-    MainForm(size_t width, size_t height, std::string label) : Element(width, height, label, "MainForm") {}
+    MainForm(size_t width, size_t height, std::string label, Status status = Status::NORMAL)
+            : ViewElement(width, height, label, "MainForm", status) {}
 };
 
-class ListView : public Element {
+class ListView : public ViewElement {
 public:
-    ListView(size_t width, size_t height, std::string label) : Element(width, height, label, "ListView") {}
+    ListView(size_t width, size_t height, std::string label, Status status = Status::NORMAL)
+            : ViewElement(width, height, label, "ListView", status) {}
 };
 
-class Batton : public Element {
+class Batton : public ViewElement {
 public:
-    Batton(size_t width, size_t height, std::string label) : Element(width, height, label, "Batton") {}
+    Batton(size_t width, size_t height, std::string label, Status status = Status::NORMAL)
+            : ViewElement(width, height, label, "Batton", status) {}
 
     char getChar(int x, int y) {
         if (y == 1 && x >= 1 && x <= label.size()) {
             return label[x - 1];
         }
-        return Element::getChar(x, y);
+        return ViewElement::getChar(x, y);
     }
 };
 

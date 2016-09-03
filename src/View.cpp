@@ -3,11 +3,11 @@
 #include <sstream>
 
 View::View() : mainForm(17, 17, "List Manager") {
-    mainForm.addElement(new ListView(5, 6, "List"), 1, 1);
-    mainForm.addElement(new Batton(6, 3, "Load"), 8, 1);
-    mainForm.addElement(new Batton(6, 3, "Save"), 8, 5);
-    mainForm.addElement(new Batton(5, 3, "Add"), 8, 9);
-    mainForm.addElement(new Batton(8, 3, "Delete"), 8, 13);
+    mainForm.addElement(new ListView(5, 6, "List"),                            1, 1);
+    mainForm.addElement(new Batton(6, 3, "Load", ViewElement::Status::ACTIVE), 8, 1);
+    mainForm.addElement(new Batton(6, 3, "Save"),                              8, 5);
+    mainForm.addElement(new Batton(5, 3, "Add"),                               8, 9);
+    mainForm.addElement(new Batton(8, 3, "Delete"),                            8, 13);
 }
 
 std::string View::getView() {
