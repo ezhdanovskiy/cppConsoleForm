@@ -10,7 +10,7 @@ enum Control {
 
 Control getControl();
 
-};
+} // namespace KeyController
 
 
 #endif //CPPCONSOLEFORM_KEYCONTROLLER_H

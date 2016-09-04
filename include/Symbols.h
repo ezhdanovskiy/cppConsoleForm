@@ -14,14 +14,13 @@ enum Position {
 };
 
 enum Color {
-    Grey, Red, Green, Yellow, Blue, Magenta, Cyan,	White
+    Grey, Red, Green, Yellow, Blue, Magenta, Cyan, White
 };
 
 std::string getConsoleColor(const std::vector<int> &graphicsModes);
 
 class Symbols {
 public:
-
     Symbols();
 
     std::string getSymbol(Position position, int page = 0);

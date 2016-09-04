@@ -2,7 +2,9 @@
 #include "KeyController.h"
 #include "View.h"
 
-int main() {
+int main()
+{
+//    LOG(__func__);
     View view;
     std::cout << view.getView();
     bool exit = false;

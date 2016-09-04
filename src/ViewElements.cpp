@@ -3,14 +3,12 @@
 
 ViewElement::ViewElement(size_t width, size_t height, std::string label, std::string className,
                          std::shared_ptr<Symbols> symbolSchema, ViewElementStatus status)
-        : height(height),
-          width(width),
-          label(label),
-          className(className),
+        : height(height), width(width),
+          label(label), className(className),
           status(status),
           symbolSchema(symbolSchema)
 {
-    LOG(std::string(" ", logIndent) << "ViewElement::" << __func__ << "(width=" << width << " height=" << height
+    LOG(std::string(logIndent, ' ') << "ViewElement::" << __func__ << "(width=" << width << " height=" << height
                 << " className=" << className << " label=" << label << ")");
 }
 
@@ -49,7 +47,7 @@ Position ViewElement::getPosition(int x, int y)
 
 std::string ViewElement::getSymbol(int x, int y)
 {
-//    LOG(logIndent << "ViewElement::" << __func__ << "(" << x << ", " << y << ") " << label);
+//    LOG(std::string(logIndent, ' ') << "ViewElement::" << __func__ << "(" << x << ", " << y << ") " << label);
     Position position = getPosition(x, y);
     if (position == Position::INSIDE) {
         for (auto &el : innerElements) {
@@ -64,8 +62,14 @@ std::string ViewElement::getSymbol(int x, int y)
 
 std::string ViewElement::getColor()
 {
-//    LOG(logIndent << "ViewElement::" << __func__ << "() " << label);
+//    LOG(std::string(logIndent, ' ') << "ViewElement::" << __func__ << "() " << label);
     return symbolSchema->getColor(status);
+}
+
+void ViewElement::addElement(int x, int y, ViewElement *ptr)
+{
+    innerElements.emplace_back(x, y, ptr);
+    innerElements.back().setLogIndent(logIndent + 2);
 }
 
 void ViewElement::moveActiveToNext()
@@ -124,6 +128,7 @@ void ViewElement::changeSymbolSchema(std::shared_ptr<Symbols> newSymbolSchema)
 MainForm:: MainForm(size_t width, size_t height, std::string label, ViewElementStatus status)
         : ViewElement(width, height, label, "MainForm", std::make_shared<Symbols>(), status)
 {
+//    LOG(__func__);
 }
 
 ListView::ListView(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols, ViewElementStatus status)
@@ -138,7 +143,7 @@ Button::Button(size_t width, size_t height, std::string label, std::shared_ptr<S
 
 std::string Button::getSymbol(int x, int y)
 {
-//    LOG(logIndent << "Button::" << __func__ << "(" << x << ", " << y << ") " << label);
+//    LOG(std::string(logIndent, ' ') << "Button::" << __func__ << "(" << x << ", " << y << ") " << label);
     if (y == 1 && x >= 1 && x <= label.size()) {
         std::stringstream out;
         out << getColor() << label[x - 1] << CONSOLE_COLOR_OFF;

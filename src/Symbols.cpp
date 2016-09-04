@@ -26,6 +26,7 @@ std::string getConsoleColor(const std::vector<int> &graphicsModes)
 
 Symbols::Symbols()
 {
+//    LOG(__func__);
 //    setTop(   "┌─┐");
 //    setMiddle("│ │");
 //    setBottom("└─┘");
@@ -46,7 +47,6 @@ Symbols::Symbols()
     setTextColor(      Color::White, ViewElementStatus::NORMAL);
     setBackgroundColor(Color::Grey, ViewElementStatus::NORMAL);
 
-
     setTop(   "*-*", ViewElementStatus::ACTIVE);
     setMiddle("| |", ViewElementStatus::ACTIVE);
     setBottom("*-*", ViewElementStatus::ACTIVE);
@@ -66,9 +66,9 @@ std::string Symbols::getSymbol(Position position, int page)
 {
 //    LOG("    " << __func__ << "(" << position << ", " << page << ")");
     std::string color;
-    auto it = graphicsModes.find(page);
-    if (it != graphicsModes.end()) {
-        color = getConsoleColor(it->second);
+    auto graphicsModesIt = graphicsModes.find(page);
+    if (graphicsModesIt != graphicsModes.end()) {
+        color = getConsoleColor(graphicsModesIt->second);
     }
     std::stringstream out;
     out << color << symbols[makeIndex(position, page)] << CONSOLE_COLOR_OFF;
@@ -79,9 +79,9 @@ std::string Symbols::getColor(int page)
 {
 //    LOG(__func__ << "(" << page << ")");
     std::string color;
-    auto it = graphicsModes.find(page);
-    if (it != graphicsModes.end()) {
-        color = getConsoleColor(it->second);
+    auto graphicsModesIt = graphicsModes.find(page);
+    if (graphicsModesIt != graphicsModes.end()) {
+        color = getConsoleColor(graphicsModesIt->second);
     }
     return color;
 }
@@ -96,9 +96,9 @@ void Symbols::setTop(std::string s, int page)
     if (s.size() != 3) {
         throw std::range_error(__func__);
     }
-    symbols[makeIndex(BORDER_TOP_LEFT, page)] = s[0];
+    symbols[makeIndex(BORDER_TOP_LEFT, page)]   = s[0];
     symbols[makeIndex(BORDER_TOP_MIDDLE, page)] = s[1];
-    symbols[makeIndex(BORDER_TOP_RIGHT, page)] = s[2];
+    symbols[makeIndex(BORDER_TOP_RIGHT, page)]  = s[2];
 }
 
 void Symbols::setMiddle(std::string s, int page)
@@ -106,8 +106,8 @@ void Symbols::setMiddle(std::string s, int page)
     if (s.size() != 3) {
         throw std::range_error(__func__);
     }
-    symbols[makeIndex(BORDER_MIDDLE_LEFT, page)] = s[0];
-    symbols[makeIndex(INSIDE, page)] = s[1];
+    symbols[makeIndex(BORDER_MIDDLE_LEFT, page)]  = s[0];
+    symbols[makeIndex(INSIDE, page)]              = s[1];
     symbols[makeIndex(BORDER_MIDDLE_RIGHT, page)] = s[2];
 }
 
@@ -116,9 +116,9 @@ void Symbols::setBottom(std::string s, int page)
     if (s.size() != 3) {
         throw std::range_error(__func__);
     }
-    symbols[makeIndex(BORDER_BOTTOM_LEFT, page)] = s[0];
+    symbols[makeIndex(BORDER_BOTTOM_LEFT, page)]   = s[0];
     symbols[makeIndex(BORDER_BOTTOM_MIDDLE, page)] = s[1];
-    symbols[makeIndex(BORDER_BOTTOM_RIGHT, page)] = s[2];
+    symbols[makeIndex(BORDER_BOTTOM_RIGHT, page)]  = s[2];
 }
 
 void Symbols::setOutside(char ch, int page)
@@ -129,18 +129,17 @@ void Symbols::setOutside(char ch, int page)
 void Symbols::setTextColor(Color color, int page)
 {
     graphicsModes[page].push_back(30 + color);
-//    textColors[page] = color;
 }
 
 void Symbols::setBackgroundColor(Color color, int page)
 {
     graphicsModes[page].push_back(40 + color);
-//    backgroundColors[page] = color;
 }
 
 Symbols2::Symbols2() : Symbols()
 {
-    setTop("===", ViewElementStatus::NORMAL);
+    setTop(   "===", ViewElementStatus::NORMAL);
+
     setTop(   "*=*", ViewElementStatus::ACTIVE);
     setMiddle("# #", ViewElementStatus::ACTIVE);
     setBottom("*=*", ViewElementStatus::ACTIVE);
@@ -148,13 +147,15 @@ Symbols2::Symbols2() : Symbols()
 
 ButtonSymbols::ButtonSymbols() : Symbols()
 {
+    setTextColor(Color::White, ViewElementStatus::NORMAL);
+
 //    setTop(   "*=*", ViewElementStatus::ACTIVE);
 //    setMiddle("# #", ViewElementStatus::ACTIVE);
 //    setBottom("*=*", 1ViewElementStatus::ACTIVE);
-    setTextColor(Color::White, ViewElementStatus::NORMAL);
-//    setTextColor(Color::White, ViewElementStatus::DISABLE);
 //    setTextColor(Color::White, ViewElementStatus::ACTIVE);
 //    setBackgroundColor(Color::Cyan, ViewElementStatus::ACTIVE);
+
+//    setTextColor(Color::White, ViewElementStatus::DISABLE);
 }
 
 ListSymbols::ListSymbols() : Symbols()

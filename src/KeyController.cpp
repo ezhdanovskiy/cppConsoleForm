@@ -3,7 +3,8 @@
 
 #include <termios.h>
 
-KeyController::Control KeyController::getControl() {
+KeyController::Control KeyController::getControl()
+{
     struct termios oldt, newt;
     int ch[3] = {0, 0, 0};
     tcgetattr(STDIN_FILENO, &oldt);

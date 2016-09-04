@@ -45,10 +45,9 @@ public:
             return element->getLogIndent();
         }
 
-        void setLogIndent(int newLogIndent) {
+        void setLogIndent(size_t newLogIndent) {
             element->setLogIndent(newLogIndent);
         }
-
 
         std::string getSymbol(int x, int y) {
             return element->getSymbol(x, y);
@@ -105,11 +104,7 @@ public:
     virtual std::string getSymbol(int x, int y);
     virtual std::string getColor();
 
-    void addElement(int x, int y, ViewElement *ptr)
-    {
-        innerElements.emplace_back(x, y, ptr);
-        innerElements.back().setLogIndent(logIndent + 2);
-    }
+    void addElement(int x, int y, ViewElement *ptr);
 
     void moveActiveToNext();
     void moveActiveToPrevious();
@@ -124,7 +119,7 @@ protected:
     std::shared_ptr<Symbols> symbolSchema;
     std::vector<InnerElement> innerElements;
     ViewElementStatus status;
-    size_t logIndent;
+    size_t logIndent = 0;
 };
 
 class MainForm : public ViewElement {
