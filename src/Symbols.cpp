@@ -2,127 +2,166 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <Common.h>
 
-std::string getConsoleColor(Color textColor, Color backgroundColor) {
+std::string getConsoleColor(const std::vector<int> &graphicsModes)
+{
+    if (graphicsModes.empty()) {
+        return "";
+    }
     std::stringstream out;
-    out << "\033[3" << (int)textColor << ";4" << backgroundColor << "m";
+    out << "\033[";
+    bool first = true;
+    for (int graphicsMode : graphicsModes) {
+        if (!first) {
+            out << ";";
+        }
+        first = false;
+        out << graphicsMode;
+    }
+    out << "m";
 //    LOG(__func__ << "(" << (int)textColor << "," << (int)backgroundColor << ") return '" << out.str() << "'");
     return out.str();
 }
 
-Symbols::Symbols() {
-//        setTop(   "┌─┐");
-//        setMiddle("│ │");
-//        setBottom("└─┘");
-//        setTop(   "╔─╗");
-//        setMiddle("│ │");
-//        setBottom("╚─╝");
-    setTop(   " - ");
-    setMiddle("| |");
-    setBottom(" - ");
-    setOutside('z');
-    setTextColor(Color::White);
-
+Symbols::Symbols()
+{
+//    setTop(   "┌─┐");
+//    setMiddle("│ │");
+//    setBottom("└─┘");
+//    setTop(   "╔─╗");
+//    setMiddle("│ │");
+//    setBottom("╚─╝");
 //    setTop(   "***", 1);
 //    setMiddle("* *", 1);
 //    setBottom("***", 1);
-
-    setTop(   "*-*", 1);
-    setMiddle("| |", 1);
-    setBottom("*-*", 1);
-    setTextColor(Color::Green, 1);
-
 //    setTop(   "*=*", 1);
 //    setMiddle("# #", 1);
 //    setBottom("*=*", 1);
 
-    setOutside('Z', 1);
+    setTop(   " - ", ViewElementStatus::NORMAL);
+    setMiddle("| |", ViewElementStatus::NORMAL);
+    setBottom(" - ", ViewElementStatus::NORMAL);
+    setOutside('z', ViewElementStatus::NORMAL);
+    setTextColor(      Color::White, ViewElementStatus::NORMAL);
+    setBackgroundColor(Color::Grey, ViewElementStatus::NORMAL);
+
+
+    setTop(   "*-*", ViewElementStatus::ACTIVE);
+    setMiddle("| |", ViewElementStatus::ACTIVE);
+    setBottom("*-*", ViewElementStatus::ACTIVE);
+    setOutside('Z', ViewElementStatus::ACTIVE);
+    setTextColor(      Color::Green, ViewElementStatus::ACTIVE);
+    setBackgroundColor(Color::Grey, ViewElementStatus::ACTIVE);
+
+    setTop(   " - ", ViewElementStatus::DISABLE);
+    setMiddle("| |", ViewElementStatus::DISABLE);
+    setBottom(" - ", ViewElementStatus::DISABLE);
+    setOutside('Z', ViewElementStatus::DISABLE);
+//    setTextColor(Color::Grey, ViewElementStatus::DISABLE);
+    setBackgroundColor(Color::Grey, ViewElementStatus::DISABLE);
 }
 
-std::string Symbols::getSymbol(Position position, int page) {
-    LOG(__func__ << "(" << position << ", " << page << ")");
-    if (page < 0 || page > 1) {
-        page = 0;
+std::string Symbols::getSymbol(Position position, int page)
+{
+//    LOG("    " << __func__ << "(" << position << ", " << page << ")");
+    std::string color;
+    auto it = graphicsModes.find(page);
+    if (it != graphicsModes.end()) {
+        color = getConsoleColor(it->second);
     }
-    LOG1(textColors[page]);
-    LOG1(backgroundColors[page]);
     std::stringstream out;
-    out << getConsoleColor(textColors[page], backgroundColors[page]) << symbols[makeIndex(position, page)] << CONSOLE_COLOR_OFF;
+    out << color << symbols[makeIndex(position, page)] << CONSOLE_COLOR_OFF;
     return out.str();
 }
 
-std::string Symbols::getColor(int page) {
-    LOG(__func__ << "(" << page << ")");
-    if (page < 0 || page > 1) {
-        page = 0;
+std::string Symbols::getColor(int page)
+{
+//    LOG(__func__ << "(" << page << ")");
+    std::string color;
+    auto it = graphicsModes.find(page);
+    if (it != graphicsModes.end()) {
+        color = getConsoleColor(it->second);
     }
-    LOG1(textColors[page]);
-    return getConsoleColor(textColors[page], backgroundColors[page]);
+    return color;
 }
 
-int Symbols::makeIndex(Position position, int page) {
-    if (page < 0 || page > 1) {
-        page = 0;
-    }
+int Symbols::makeIndex(Position position, int page)
+{
     return page * 1000 + position;
 }
 
-void Symbols::setTop(std::string s, int page) {
+void Symbols::setTop(std::string s, int page)
+{
     if (s.size() != 3) {
         throw std::range_error(__func__);
     }
-    symbols[makeIndex(BORDER_TOP_LEFT, page)]   = s[0];
+    symbols[makeIndex(BORDER_TOP_LEFT, page)] = s[0];
     symbols[makeIndex(BORDER_TOP_MIDDLE, page)] = s[1];
-    symbols[makeIndex(BORDER_TOP_RIGHT, page)]  = s[2];
+    symbols[makeIndex(BORDER_TOP_RIGHT, page)] = s[2];
 }
 
-void Symbols::setMiddle(std::string s, int page) {
+void Symbols::setMiddle(std::string s, int page)
+{
     if (s.size() != 3) {
         throw std::range_error(__func__);
     }
-    symbols[makeIndex(BORDER_MIDDLE_LEFT, page)]  = s[0];
-    symbols[makeIndex(INSIDE, page)]              = s[1];
+    symbols[makeIndex(BORDER_MIDDLE_LEFT, page)] = s[0];
+    symbols[makeIndex(INSIDE, page)] = s[1];
     symbols[makeIndex(BORDER_MIDDLE_RIGHT, page)] = s[2];
 }
 
-void Symbols::setBottom(std::string s, int page) {
+void Symbols::setBottom(std::string s, int page)
+{
     if (s.size() != 3) {
         throw std::range_error(__func__);
     }
-    symbols[makeIndex(BORDER_BOTTOM_LEFT, page)]   = s[0];
+    symbols[makeIndex(BORDER_BOTTOM_LEFT, page)] = s[0];
     symbols[makeIndex(BORDER_BOTTOM_MIDDLE, page)] = s[1];
-    symbols[makeIndex(BORDER_BOTTOM_RIGHT, page)]  = s[2];
+    symbols[makeIndex(BORDER_BOTTOM_RIGHT, page)] = s[2];
 }
 
-void Symbols::setOutside(char ch, int page) {
+void Symbols::setOutside(char ch, int page)
+{
     symbols[makeIndex(OUTSIDE, page)] = ch;
 }
 
-void Symbols::setTextColor(Color color, int page) {
-    if (page < 0 || page > 1) {
-        page = 0;
-    }
-    textColors[page] = color;
+void Symbols::setTextColor(Color color, int page)
+{
+    graphicsModes[page].push_back(30 + color);
+//    textColors[page] = color;
 }
 
-void Symbols::setBackgroundColor(Color color, int page) {
-    if (page < 0 || page > 1) {
-        page = 0;
-    }
-    backgroundColors[page] = color;
+void Symbols::setBackgroundColor(Color color, int page)
+{
+    graphicsModes[page].push_back(40 + color);
+//    backgroundColors[page] = color;
 }
 
-Symbols2::Symbols2() : Symbols() {
-    setTop(   "===");
-    setTop(   "*=*", 1);
-    setMiddle("# #", 1);
-    setBottom("*=*", 1);
+Symbols2::Symbols2() : Symbols()
+{
+    setTop("===", ViewElementStatus::NORMAL);
+    setTop(   "*=*", ViewElementStatus::ACTIVE);
+    setMiddle("# #", ViewElementStatus::ACTIVE);
+    setBottom("*=*", ViewElementStatus::ACTIVE);
 }
 
-ButtonSymbols::ButtonSymbols() : Symbols() {
-    setTop(   "*=*", 1);
-    setMiddle("# #", 1);
-    setBottom("*=*", 1);
-    setTextColor(Color::Magenta, 1);
-    setBackgroundColor(Color::Cyan, 1);
+ButtonSymbols::ButtonSymbols() : Symbols()
+{
+//    setTop(   "*=*", ViewElementStatus::ACTIVE);
+//    setMiddle("# #", ViewElementStatus::ACTIVE);
+//    setBottom("*=*", 1ViewElementStatus::ACTIVE);
+    setTextColor(Color::White, ViewElementStatus::NORMAL);
+//    setTextColor(Color::White, ViewElementStatus::DISABLE);
+//    setTextColor(Color::White, ViewElementStatus::ACTIVE);
+//    setBackgroundColor(Color::Cyan, ViewElementStatus::ACTIVE);
+}
+
+ListSymbols::ListSymbols() : Symbols()
+{
+    setTop(   " - ", ViewElementStatus::ACTIVE);
+//    setMiddle("# #", ViewElementStatus::ACTIVE);
+    setBottom(" - ", ViewElementStatus::ACTIVE);
+//    setTextColor(Color::Grey, ViewElementStatus::ACTIVE);
+    setBackgroundColor(Color::Grey, ViewElementStatus::ACTIVE);
 }

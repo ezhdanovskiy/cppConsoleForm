@@ -3,6 +3,7 @@
 
 
 #include "Logger.h"
+#include <vector>
 #include <unordered_map>
 
 enum Position {
@@ -13,10 +14,10 @@ enum Position {
 };
 
 enum Color {
-    Black, Red, Green, Yellow, Blue, Magenta, Cyan,	White
+    Grey, Red, Green, Yellow, Blue, Magenta, Cyan,	White
 };
 
-std::string getConsoleColor(Color textColor, Color backgroundColor);
+std::string getConsoleColor(const std::vector<int> &graphicsModes);
 
 class Symbols {
 public:
@@ -27,17 +28,16 @@ public:
     std::string getColor(int page = 0);
 
 protected:
-    void setTop(std::string s, int page = 0);
-    void setMiddle(std::string s, int page = 0);
-    void setBottom(std::string s, int page = 0);
-    void setOutside(char ch, int page = 0);
-    void setTextColor(Color color, int page = 0);
-    void setBackgroundColor(Color color, int page = 0);
+    void setTop(std::string s, int page);
+    void setMiddle(std::string s, int page);
+    void setBottom(std::string s, int page);
+    void setOutside(char ch, int page);
+    void setTextColor(Color color, int page);
+    void setBackgroundColor(Color color, int page);
     int makeIndex(Position position, int page);
 
     std::unordered_map<int, char> symbols;
-    Color textColors[2];
-    Color backgroundColors[2];
+    std::unordered_map<int, std::vector<int>> graphicsModes;
 };
 
 class Symbols2 : public Symbols {
@@ -48,6 +48,11 @@ public:
 class ButtonSymbols : public Symbols {
 public:
     ButtonSymbols();
+};
+
+class ListSymbols : public Symbols {
+public:
+    ListSymbols();
 };
 
 #endif //CPPCONSOLEFORM_SYMBOLS_H

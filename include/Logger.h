@@ -9,8 +9,13 @@
 #define LOG_BEGIN std::cout
 #define LOG_END "\t\t\t[" << __FILE__ << ":" << __LINE__ << "]" << std::endl;
 
-#define LOG(chain) LOG_BEGIN << chain << LOG_END
-#define LOG1(el) LOG_BEGIN << #el << "=" << (el) << LOG_END
+#if !defined(NDEBUG)
+    #define LOG(chain) LOG_BEGIN << chain << LOG_END
+    #define LOG1(el) LOG_BEGIN << #el << "=" << (el) << LOG_END
+#else
+    #define LOG(chain)
+    #define LOG1(el)
+#endif
 
 #define CONSOLE_COLOR_OFF "\033[0m"
 #define CONSOLE_COLOR_BOLD "\033[1m"

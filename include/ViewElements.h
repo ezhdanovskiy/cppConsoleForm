@@ -2,6 +2,7 @@
 #define CPPCONSOLEFORM_VIEWELEMENTS_H
 
 
+#include "Common.h"
 #include "Logger.h"
 #include "Symbols.h"
 
@@ -11,11 +12,10 @@
 
 class ViewElement {
 public:
-    enum Status {NORMAL, ACTIVE};
 
     class InnerElement {
     public:
-        InnerElement(ViewElement *ptr, int x, int y) : element(ptr), x(x), y(y) {}
+        InnerElement(int x, int y, ViewElement *ptr) : x(x), y(y), element(ptr) {}
 
         size_t getHeight() const {
             return element->getHeight();
@@ -33,13 +33,22 @@ public:
             return y;
         }
 
-        Status getStatus() const {
+        ViewElementStatus getStatus() const {
             return element->getStatus();
         }
 
-        void setStatus(Status newStatus) {
+        void setStatus(ViewElementStatus newStatus) {
             element->setStatus(newStatus);
         }
+
+        int getLogIndent() const {
+            return element->getLogIndent();
+        }
+
+        void setLogIndent(int newLogIndent) {
+            element->setLogIndent(newLogIndent);
+        }
+
 
         std::string getSymbol(int x, int y) {
             return element->getSymbol(x, y);
@@ -50,13 +59,13 @@ public:
         }
 
     private:
-        std::unique_ptr<ViewElement> element;
         int x;
         int y;
+        std::unique_ptr<ViewElement> element;
     };
 
     ViewElement(size_t width, size_t height, std::string label, std::string className,
-                std::shared_ptr<Symbols> symbols, Status status);
+                std::shared_ptr<Symbols> symbols, ViewElementStatus status);
 
     size_t getHeight() const {
         return height;
@@ -66,12 +75,29 @@ public:
         return width;
     }
 
-    Status getStatus() const {
+    ViewElementStatus getStatus() const {
         return status;
     }
 
-    void setStatus(Status newStatus) {
+    void setStatus(ViewElementStatus newStatus) {
         status = newStatus;
+    }
+
+    int getLogIndent() const {
+        return logIndent;
+    }
+
+    void setLogIndent(int newLogIndent) {
+//        LOG(logIndent << "ViewElement::" << __func__ << "(newLogIndent=" << newLogIndent << ") " << label);
+        logIndent = newLogIndent;
+    }
+
+    std::shared_ptr<Symbols> getSymbolSchema() const {
+        return symbolSchema;
+    }
+
+    void setSymbolSchema(std::shared_ptr<Symbols> newSymbolSchema) {
+        symbolSchema = newSymbolSchema;
     }
 
     Position getPosition(int x, int y);
@@ -79,40 +105,43 @@ public:
     virtual std::string getSymbol(int x, int y);
     virtual std::string getColor();
 
-    void addElement(ViewElement *ptr, int x, int y) {
-        elements.emplace_back(ptr, x, y);
+    void addElement(int x, int y, ViewElement *ptr)
+    {
+        innerElements.emplace_back(x, y, ptr);
+        innerElements.back().setLogIndent(logIndent + 2);
     }
 
     void moveActiveToNext();
     void moveActiveToPrevious();
 
-    void changeSymbols(std::shared_ptr<Symbols> newSymbols);
+    void changeSymbolSchema(std::shared_ptr<Symbols> newSymbolSchema);
 
 protected:
     size_t height;
     size_t width;
     std::string label;
     std::string className;
-    std::shared_ptr<Symbols> symbols;
-    std::vector<InnerElement> elements;
-    Status status;
+    std::shared_ptr<Symbols> symbolSchema;
+    std::vector<InnerElement> innerElements;
+    ViewElementStatus status;
+    size_t logIndent;
 };
 
 class MainForm : public ViewElement {
 public:
-    MainForm(size_t width, size_t height, std::string label, Status status = Status::NORMAL);
+    MainForm(size_t width, size_t height, std::string label, ViewElementStatus status);
 };
 
 class ListView : public ViewElement {
 public:
     ListView(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols,
-             Status status = Status::NORMAL);
+             ViewElementStatus status);
 };
 
 class Button : public ViewElement {
 public:
     Button(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols,
-           Status status = Status::NORMAL);
+           ViewElementStatus status);
 
     std::string getSymbol(int x, int y) override;
 };

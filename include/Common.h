@@ -1,0 +1,12 @@
+#ifndef CPPCONSOLEFORM_COMMON_H
+#define CPPCONSOLEFORM_COMMON_H
+
+
+enum ViewElementStatus {
+    NORMAL,
+    ACTIVE,
+    DISABLE
+};
+
+
+#endif //CPPCONSOLEFORM_COMMON_H
