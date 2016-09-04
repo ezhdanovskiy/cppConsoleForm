@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 2.8)
 project(cppConsoleForm)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -11,5 +11,6 @@ set(SOURCE_FILES
     src/ViewController.cpp
     src/ViewElements.cpp
     src/Symbols.cpp
+    src/Model.cpp
     )
 add_executable(cppConsoleForm ${SOURCE_FILES})

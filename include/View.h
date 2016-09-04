@@ -13,10 +13,16 @@ public:
     std::string getView();
     void moveActiveToNext();
     void moveActiveToPrevious();
+
     void changeSkin();
+
+    void setList(const std::vector<std::string> &list);
+
+    void setEnableFlag(std::string elementName, bool isEnable);
 
 private:
     MainForm mainForm;
+    std::unordered_map<std::string, std::shared_ptr<ViewElement>> viewElements;
 };
 
 

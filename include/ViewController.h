@@ -5,7 +5,7 @@
 class ViewController {
 public:
     enum Control {
-        NOTHING, NEXT, PREVIOUS, EXIT, CHANGE_SKIN
+        NOTHING, NEXT, PREVIOUS, ENTER, EXIT, CHANGE_SKIN
     };
 
     void run();

@@ -66,7 +66,7 @@ std::string ViewElement::getColor()
     return symbolSchema->getColor(status);
 }
 
-void ViewElement::addElement(int x, int y, ViewElement *ptr)
+void ViewElement::addElement(int x, int y, std::shared_ptr<ViewElement> ptr)
 {
     innerElements.emplace_back(x, y, ptr);
     innerElements.back().setLogIndent(logIndent + 2);
@@ -134,6 +134,22 @@ MainForm:: MainForm(size_t width, size_t height, std::string label, ViewElementS
 ListView::ListView(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols, ViewElementStatus status)
         : ViewElement(width, height, label, "ListView", symbols, status)
 {
+}
+
+void ListView::setList(const std::vector<std::string> &newList) {
+    list = newList;
+}
+
+std::string ListView::getSymbol(int x, int y) {
+    if (x > 0 && x < width - 1 && y > 0 && y < height - 1 && y <= list.size()) {
+        const auto &item = list[y - 1];
+        if (x <= item.size()) {
+            std::stringstream out;
+            out << getColor() << item[x - 1] << CONSOLE_COLOR_OFF;
+            return out.str();
+        }
+    }
+    return ViewElement::getSymbol(x, y);
 }
 
 Button::Button(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols, ViewElementStatus status)

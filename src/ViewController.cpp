@@ -1,11 +1,13 @@
 #include "ViewController.h"
 #include "Logger.h"
 #include "View.h"
+#include "Model.h"
 
 #include <termios.h>
 
 void ViewController::run() {
     View view;
+    Model model;
     std::cout << view.getView();
     bool exit = false;
     while (!exit) {
@@ -23,14 +25,22 @@ void ViewController::run() {
                 view.moveActiveToPrevious();
                 std::cout << view.getView();
                 break;
-            case Control::CHANGE_SKIN :
-                LOG("CHANGE_SKIN");
-                view.changeSkin();
+            case Control::ENTER :
+                LOG("ENTER");
+                model.add("1111");
+                view.setList(model.getList());
+                view.setEnableFlag("ButtonSave", !model.empty());
+                view.setEnableFlag("ButtonDelete", !model.empty());
                 std::cout << view.getView();
                 break;
             case Control::EXIT :
                 LOG("EXIT");
                 exit = true;
+                break;
+            case Control::CHANGE_SKIN :
+                LOG("CHANGE_SKIN");
+                view.changeSkin();
+                std::cout << view.getView();
                 break;
         }
     }
@@ -78,6 +88,10 @@ ViewController::Control ViewController::getControl()
         }
         case 9: // tab
             out = Control::NEXT;
+            break;
+        case 10: // enter
+        case 32: // space
+            out = Control::ENTER;
             break;
         case 113: // q
             out = Control::EXIT;

@@ -2,16 +2,22 @@
 
 #include <sstream>
 
-View::View() : mainForm(17, 17, "MainForm", ViewElementStatus::NORMAL)
+View::View() : mainForm(20, 17, "MainForm", ViewElementStatus::NORMAL)
 {
-//    LOG(__func__);
-    mainForm.addElement(1, 1, new ListView(5, 7, "List", std::make_shared<ListSymbols>(), ViewElementStatus::DISABLE));
+    LOG(__func__);
+    viewElements["List"] =
+            std::make_shared<ListView>(8, 7, "List", std::make_shared<ListSymbols>(), ViewElementStatus::DISABLE);
+    mainForm.addElement(1, 1, viewElements["List"]);
 
     auto buttonSymbols = std::make_shared<ButtonSymbols>();
-    mainForm.addElement(8,  1, new Button(6, 3, "Load",   buttonSymbols, ViewElementStatus::ACTIVE));
-    mainForm.addElement(8,  5, new Button(6, 3, "Save",   buttonSymbols, ViewElementStatus::DISABLE));
-    mainForm.addElement(8,  9, new Button(5, 3, "Add",    buttonSymbols, ViewElementStatus::NORMAL));
-    mainForm.addElement(8, 13, new Button(8, 3, "Delete", buttonSymbols, ViewElementStatus::DISABLE));
+    viewElements["ButtonLoad"]   = std::make_shared<Button>(6, 3, "Load",   buttonSymbols, ViewElementStatus::ACTIVE);
+    viewElements["ButtonSave"]   = std::make_shared<Button>(6, 3, "Save",   buttonSymbols, ViewElementStatus::DISABLE);
+    viewElements["ButtonAdd"]    = std::make_shared<Button>(5, 3, "Add",    buttonSymbols, ViewElementStatus::NORMAL);
+    viewElements["ButtonDelete"] = std::make_shared<Button>(8, 3, "Delete", buttonSymbols, ViewElementStatus::DISABLE);
+    mainForm.addElement(11,  1, viewElements["ButtonLoad"]);
+    mainForm.addElement(11,  5, viewElements["ButtonSave"]);
+    mainForm.addElement(11,  9, viewElements["ButtonAdd"]);
+    mainForm.addElement(11, 13, viewElements["ButtonDelete"]);
 }
 
 std::string View::getView()
@@ -44,4 +50,18 @@ void View::moveActiveToPrevious()
 void View::changeSkin()
 {
     mainForm.changeSymbolSchema(std::make_shared<Symbols2>());
+}
+
+void View::setList(const std::vector<std::string> &newList) {
+    dynamic_cast<ListView*>(viewElements["List"].get())->setList(newList);
+}
+void View::setEnableFlag(std::string elementName, bool isEnable) {
+    auto it = viewElements.find(elementName);
+    if (it != viewElements.end()) {
+        if (isEnable) {
+            it->second->setStatus(ViewElementStatus::NORMAL);
+        } else {
+            it->second->setStatus(ViewElementStatus::DISABLE);
+        }
+    }
 }

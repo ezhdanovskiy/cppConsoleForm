@@ -15,7 +15,7 @@ public:
 
     class InnerElement {
     public:
-        InnerElement(int x, int y, ViewElement *ptr) : x(x), y(y), element(ptr) {}
+        InnerElement(int x, int y, std::shared_ptr<ViewElement> ptr) : x(x), y(y), element(ptr) {}
 
         size_t getHeight() const {
             return element->getHeight();
@@ -60,7 +60,7 @@ public:
     private:
         int x;
         int y;
-        std::unique_ptr<ViewElement> element;
+        std::shared_ptr<ViewElement> element;
     };
 
     ViewElement(size_t width, size_t height, std::string label, std::string className,
@@ -104,7 +104,7 @@ public:
     virtual std::string getSymbol(int x, int y);
     virtual std::string getColor();
 
-    void addElement(int x, int y, ViewElement *ptr);
+    void addElement(int x, int y, std::shared_ptr<ViewElement> ptr);
 
     void moveActiveToNext();
     void moveActiveToPrevious();
@@ -131,6 +131,10 @@ class ListView : public ViewElement {
 public:
     ListView(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols,
              ViewElementStatus status);
+    void setList(const std::vector<std::string> &list);
+    std::string getSymbol(int x, int y) override;
+private:
+    std::vector<std::string> list;
 };
 
 class Button : public ViewElement {
