@@ -1,9 +1,42 @@
-#include "KeyController.h"
+#include "ViewController.h"
 #include "Logger.h"
+#include "View.h"
 
 #include <termios.h>
 
-KeyController::Control KeyController::getControl()
+void ViewController::run() {
+    View view;
+    std::cout << view.getView();
+    bool exit = false;
+    while (!exit) {
+        switch (getControl()) {
+            case Control::NOTHING :
+                LOG("NOTHING");
+                break;
+            case Control::NEXT :
+                LOG("NEXT");
+                view.moveActiveToNext();
+                std::cout << view.getView();
+                break;
+            case Control::PREVIOUS :
+                LOG("PREVIOUS");
+                view.moveActiveToPrevious();
+                std::cout << view.getView();
+                break;
+            case Control::CHANGE_SKIN :
+                LOG("CHANGE_SKIN");
+                view.changeSkin();
+                std::cout << view.getView();
+                break;
+            case Control::EXIT :
+                LOG("EXIT");
+                exit = true;
+                break;
+        }
+    }
+}
+
+ViewController::Control ViewController::getControl()
 {
     struct termios oldt, newt;
     int ch[3] = {0, 0, 0};
@@ -50,7 +83,7 @@ KeyController::Control KeyController::getControl()
             out = Control::EXIT;
             break;
         case 105: // i
-            out = Control::CHANGE_SYMBOLS;
+            out = Control::CHANGE_SKIN;
             break;
         default:
             out = Control::NOTHING;

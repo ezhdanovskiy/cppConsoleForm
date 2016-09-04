@@ -8,7 +8,7 @@ include_directories(include)
 set(SOURCE_FILES
     src/main.cpp
     src/View.cpp
-    src/KeyController.cpp
+    src/ViewController.cpp
     src/ViewElements.cpp
     src/Symbols.cpp
     )
