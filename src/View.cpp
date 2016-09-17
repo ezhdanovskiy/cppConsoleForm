@@ -2,22 +2,33 @@
 
 #include <sstream>
 
-View::View() : mainForm(20, 17, "MainForm", ViewElementStatus::NORMAL)
+View::View() : symbolSchemaCurrent(SymbolSchema::Default)
 {
     LOG(__func__);
+    symbolSchemas[SymbolSchema::Default][ViewElement::Type::MainForm]   = std::make_shared<MainFormSymbols>();
+    symbolSchemas[SymbolSchema::Default][ViewElement::Type::List]       = std::make_shared<ListSymbols>();
+    symbolSchemas[SymbolSchema::Default][ViewElement::Type::Button]     = std::make_shared<ButtonSymbols>();
+    symbolSchemas[SymbolSchema::Second][ViewElement::Type::MainForm]    = std::make_shared<MainFormSymbols2>();
+    symbolSchemas[SymbolSchema::Second][ViewElement::Type::List]    = std::make_shared<ListSymbols2>();
+
+    auto mainForm =
+            std::make_shared<MainForm>(20, 17, "MainForm", std::make_shared<Symbols>(), ViewElementStatus::NORMAL);
+    viewElements["MainForm"] = mainForm;
+
     viewElements["List"] =
             std::make_shared<ListView>(8, 7, "List", std::make_shared<ListSymbols>(), ViewElementStatus::DISABLE);
-    mainForm.addElement(1, 1, viewElements["List"]);
 
     auto buttonSymbols = std::make_shared<ButtonSymbols>();
     viewElements["ButtonLoad"]   = std::make_shared<Button>(6, 3, "Load",   buttonSymbols, ViewElementStatus::ACTIVE);
     viewElements["ButtonSave"]   = std::make_shared<Button>(6, 3, "Save",   buttonSymbols, ViewElementStatus::DISABLE);
     viewElements["ButtonAdd"]    = std::make_shared<Button>(5, 3, "Add",    buttonSymbols, ViewElementStatus::NORMAL);
     viewElements["ButtonDelete"] = std::make_shared<Button>(8, 3, "Delete", buttonSymbols, ViewElementStatus::DISABLE);
-    mainForm.addElement(11,  1, viewElements["ButtonLoad"]);
-    mainForm.addElement(11,  5, viewElements["ButtonSave"]);
-    mainForm.addElement(11,  9, viewElements["ButtonAdd"]);
-    mainForm.addElement(11, 13, viewElements["ButtonDelete"]);
+
+    mainForm->addElement( 1,  1, viewElements["List"]);
+    mainForm->addElement(11,  1, viewElements["ButtonLoad"]);
+    mainForm->addElement(11,  5, viewElements["ButtonSave"]);
+    mainForm->addElement(11,  9, viewElements["ButtonAdd"]);
+    mainForm->addElement(11, 13, viewElements["ButtonDelete"]);
 }
 
 View::~View() {
@@ -31,9 +42,10 @@ std::string View::getView()
 #if defined(NDEBUG)
     s << "\033[2J";
 #endif
-    for (int y = 0; y < mainForm.getHeight(); ++y) {
-        for (int x = 0; x < mainForm.getWidth(); ++x) {
-            s << mainForm.getSymbol(x, y);
+    auto &mainForm = viewElements["MainForm"];
+    for (int y = 0; y < mainForm->getHeight(); ++y) {
+        for (int x = 0; x < mainForm->getWidth(); ++x) {
+            s << mainForm->getSymbol(x, y);
 //            LOG("  getChar(" << x << ", " << y << ") return " << s.str()[s.str().size()-1]);
         }
         s << std::endl;
@@ -43,17 +55,36 @@ std::string View::getView()
 
 void View::moveActiveToNext()
 {
-    mainForm.moveActiveToNext();
+    viewElements["MainForm"]->moveActiveToNext();
 }
 
 void View::moveActiveToPrevious()
 {
-    mainForm.moveActiveToPrevious();
+    viewElements["MainForm"]->moveActiveToPrevious();
 }
 
 void View::changeSkin()
 {
-    mainForm.changeSymbolSchema(std::make_shared<Symbols2>());
+//    LOG1(symbolSchemaCurrent);
+    switch (symbolSchemaCurrent) {
+        case SymbolSchema::Default :
+            symbolSchemaCurrent = SymbolSchema::Second;
+            break;
+        case SymbolSchema::Second :
+            symbolSchemaCurrent = SymbolSchema::Default;
+            break;
+    }
+//    LOG1(symbolSchemaCurrent);
+    for (auto &el : viewElements) {
+//        LOG1(el.second->getLabel());
+        auto type = el.second->getType();
+//        LOG1(type);
+        auto it = symbolSchemas[symbolSchemaCurrent].find(type);
+        if (it != symbolSchemas[symbolSchemaCurrent].end()) {
+//            LOG("setSymbolSchema");
+            el.second->setSymbolSchema(it->second);
+        }
+    }
 }
 
 void View::setList(const std::vector<std::string> &newList) {

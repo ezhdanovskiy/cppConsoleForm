@@ -7,6 +7,11 @@
 #include <unordered_map>
 #include <map>
 
+enum SymbolSchema {
+    Default,
+    Second,
+};
+
 enum Position {
     BORDER_TOP_LEFT,    BORDER_TOP_MIDDLE,      BORDER_TOP_RIGHT,
     BORDER_MIDDLE_LEFT,                         BORDER_MIDDLE_RIGHT,
@@ -40,9 +45,14 @@ protected:
     std::unordered_map<int, std::vector<int>> graphicsModes;
 };
 
-class Symbols2 : public Symbols {
+class MainFormSymbols : public Symbols {
 public:
-    Symbols2();
+    MainFormSymbols();
+};
+
+class MainFormSymbols2 : public Symbols {
+public:
+    MainFormSymbols2();
 };
 
 class ButtonSymbols : public Symbols {
@@ -53,6 +63,11 @@ public:
 class ListSymbols : public Symbols {
 public:
     ListSymbols();
+};
+
+class ListSymbols2 : public Symbols {
+public:
+    ListSymbols2();
 };
 
 #endif //CPPCONSOLEFORM_SYMBOLS_H

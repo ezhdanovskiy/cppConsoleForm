@@ -136,13 +136,15 @@ void Symbols::setBackgroundColor(Color color, int page)
     graphicsModes[page].push_back(40 + color);
 }
 
-Symbols2::Symbols2() : Symbols()
+MainFormSymbols::MainFormSymbols() : Symbols()
 {
-    setTop(   "===", ViewElementStatus::NORMAL);
+}
 
-    setTop(   "*=*", ViewElementStatus::ACTIVE);
-    setMiddle("# #", ViewElementStatus::ACTIVE);
-    setBottom("*=*", ViewElementStatus::ACTIVE);
+MainFormSymbols2::MainFormSymbols2() : Symbols()
+{
+    setTop(   "*=*", ViewElementStatus::NORMAL);
+    setMiddle("# #", ViewElementStatus::NORMAL);
+    setBottom("*=*", ViewElementStatus::NORMAL);
 }
 
 ButtonSymbols::ButtonSymbols() : Symbols()
@@ -160,9 +162,18 @@ ButtonSymbols::ButtonSymbols() : Symbols()
 
 ListSymbols::ListSymbols() : Symbols()
 {
-    setTop(   " - ", ViewElementStatus::ACTIVE);
+//    setTop(   " - ", ViewElementStatus::ACTIVE);
 //    setMiddle("# #", ViewElementStatus::ACTIVE);
-    setBottom(" - ", ViewElementStatus::ACTIVE);
+//    setBottom(" - ", ViewElementStatus::ACTIVE);
 //    setTextColor(Color::Grey, ViewElementStatus::ACTIVE);
-    setBackgroundColor(Color::Grey, ViewElementStatus::ACTIVE);
+//    setBackgroundColor(Color::Grey, ViewElementStatus::ACTIVE);
+}
+
+ListSymbols2::ListSymbols2() : Symbols()
+{
+    setTop(   "...", ViewElementStatus::DISABLE);
+    setMiddle(". .", ViewElementStatus::DISABLE);
+    setBottom("...", ViewElementStatus::DISABLE);
+//    setTextColor(Color::Grey, ViewElementStatus::ACTIVE);
+//    setBackgroundColor(Color::Grey, ViewElementStatus::ACTIVE);
 }

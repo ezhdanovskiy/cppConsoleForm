@@ -13,6 +13,12 @@
 class ViewElement {
 public:
 
+    enum Type {
+        MainForm,
+        Button,
+        List
+    };
+
     class InnerElement {
     public:
         InnerElement(int x, int y, std::shared_ptr<ViewElement> ptr) : x(x), y(y), element(ptr) {}
@@ -63,10 +69,14 @@ public:
         std::shared_ptr<ViewElement> element;
     };
 
-    ViewElement(size_t width, size_t height, std::string label, std::string className,
-                std::shared_ptr<Symbols> symbols, ViewElementStatus status);
+    ViewElement(ViewElement::Type type, size_t width, size_t height, std::string label,
+                    std::string className, std::shared_ptr<Symbols> symbols, ViewElementStatus status);
 
     ~ViewElement();
+
+    Type getType() const {
+        return type;
+    }
 
     size_t getHeight() const {
         return height;
@@ -74,6 +84,10 @@ public:
 
     size_t getWidth() const {
         return width;
+    }
+
+    std::string getLabel() const {
+        return label;
     }
 
     ViewElementStatus getStatus() const {
@@ -114,6 +128,7 @@ public:
     void changeSymbolSchema(std::shared_ptr<Symbols> newSymbolSchema);
 
 protected:
+    Type type;
     size_t height;
     size_t width;
     std::string label;
@@ -126,7 +141,8 @@ protected:
 
 class MainForm : public ViewElement {
 public:
-    MainForm(size_t width, size_t height, std::string label, ViewElementStatus status);
+    MainForm(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols,
+             ViewElementStatus status);
 };
 
 class ListView : public ViewElement {

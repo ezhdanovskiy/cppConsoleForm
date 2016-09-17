@@ -1,9 +1,10 @@
 #include <sstream>
 #include "ViewElements.h"
 
-ViewElement::ViewElement(size_t width, size_t height, std::string label, std::string className,
-                         std::shared_ptr<Symbols> symbolSchema, ViewElementStatus status)
-        : height(height), width(width),
+ViewElement::ViewElement(ViewElement::Type type, size_t width, size_t height, std::string label,
+                         std::string className, std::shared_ptr<Symbols> symbolSchema, ViewElementStatus status)
+        : type(type),
+          height(height), width(width),
           label(label), className(className),
           status(status),
           symbolSchema(symbolSchema)
@@ -129,14 +130,16 @@ void ViewElement::changeSymbolSchema(std::shared_ptr<Symbols> newSymbolSchema)
     symbolSchema = newSymbolSchema;
 }
 
-MainForm:: MainForm(size_t width, size_t height, std::string label, ViewElementStatus status)
-        : ViewElement(width, height, label, "MainForm", std::make_shared<Symbols>(), status)
+MainForm::MainForm(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols,
+                   ViewElementStatus status)
+        : ViewElement(Type::MainForm, width, height, label, "MainForm", symbols, status)
 {
-//    LOG(__func__);
+//    LOG(std::string(logIndent, ' ') << "MainForm::" << __func__ << "() type=" << type);
 }
 
-ListView::ListView(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols, ViewElementStatus status)
-        : ViewElement(width, height, label, "ListView", symbols, status)
+ListView::ListView(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols,
+                   ViewElementStatus status)
+        : ViewElement(Type::List, width, height, label, "ListView", symbols, status)
 {
 //    LOG(__func__);
 }
@@ -162,7 +165,7 @@ std::string ListView::getSymbol(int x, int y) {
 }
 
 Button::Button(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols, ViewElementStatus status)
-        : ViewElement(width, height, label, "Batton", symbols, status)
+        : ViewElement(Type::Button, width, height, label, "Button", symbols, status)
 {
 }
 

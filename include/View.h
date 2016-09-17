@@ -22,8 +22,12 @@ public:
     void setEnableFlag(std::string elementName, bool isEnable);
 
 private:
-    MainForm mainForm;
-    std::unordered_map<std::string, std::shared_ptr<ViewElement>> viewElements;
+    typedef std::unordered_map<std::string, std::shared_ptr<ViewElement>> ViewElements;
+    typedef std::map<SymbolSchema, std::map<ViewElement::Type, std::shared_ptr<Symbols>>> SymbolSchemas;
+
+    ViewElements viewElements;
+    SymbolSchemas symbolSchemas;
+    SymbolSchema symbolSchemaCurrent;
 };
 
 
