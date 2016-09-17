@@ -66,6 +66,8 @@ public:
     ViewElement(size_t width, size_t height, std::string label, std::string className,
                 std::shared_ptr<Symbols> symbols, ViewElementStatus status);
 
+    ~ViewElement();
+
     size_t getHeight() const {
         return height;
     }
@@ -131,6 +133,7 @@ class ListView : public ViewElement {
 public:
     ListView(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols,
              ViewElementStatus status);
+    ~ListView();
     void setList(const std::vector<std::string> &list);
     std::string getSymbol(int x, int y) override;
 private:

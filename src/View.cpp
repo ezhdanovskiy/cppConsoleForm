@@ -20,6 +20,10 @@ View::View() : mainForm(20, 17, "MainForm", ViewElementStatus::NORMAL)
     mainForm.addElement(11, 13, viewElements["ButtonDelete"]);
 }
 
+View::~View() {
+//    LOG(__func__);
+}
+
 std::string View::getView()
 {
 //    LOG(__func__);

@@ -1,6 +1,15 @@
 #include "Model.h"
+#include "Logger.h"
 
 #include <algorithm>
+
+Model::Model() {
+//    LOG(__func__);
+}
+
+Model::~Model() {
+//    LOG(__func__);
+}
 
 void Model::add(std::string item)
 {

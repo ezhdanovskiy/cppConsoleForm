@@ -6,8 +6,8 @@
 #include <termios.h>
 
 void ViewController::run() {
-    View view;
     Model model;
+    View view;
     std::cout << view.getView();
     bool exit = false;
     while (!exit) {

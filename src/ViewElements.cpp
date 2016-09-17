@@ -12,6 +12,10 @@ ViewElement::ViewElement(size_t width, size_t height, std::string label, std::st
                 << " className=" << className << " label=" << label << ")");
 }
 
+ViewElement::~ViewElement() {
+//    LOG(std::string(logIndent, ' ') << "ViewElement::" << __func__ << "(className=" << className << " label=" << label << ")");
+}
+
 Position ViewElement::getPosition(int x, int y)
 {
 //    LOG(__func__ << "(" << x << ", " << y << ") " << label);
@@ -134,6 +138,11 @@ MainForm:: MainForm(size_t width, size_t height, std::string label, ViewElementS
 ListView::ListView(size_t width, size_t height, std::string label, std::shared_ptr<Symbols> symbols, ViewElementStatus status)
         : ViewElement(width, height, label, "ListView", symbols, status)
 {
+//    LOG(__func__);
+}
+
+ListView::~ListView() {
+//    LOG(__func__);
 }
 
 void ListView::setList(const std::vector<std::string> &newList) {

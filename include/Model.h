@@ -7,6 +7,9 @@
 
 class Model {
 public:
+    Model();
+    ~Model();
+
     void add(std::string item);
     void del(std::string item);
     void load(std::string fileName);

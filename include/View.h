@@ -9,6 +9,7 @@
 class View {
 public:
     View();
+    ~View();
 
     std::string getView();
     void moveActiveToNext();
